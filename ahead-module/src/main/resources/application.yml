@@ -3,4 +3,4 @@ spring:
   application:
     name: ahead-commons-core
   profiles:
-    active: kafka,elastic
+    active: kafka,elastic,redis

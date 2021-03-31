@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import cn.dcube.ahead.elastic.service.ElasticService;
 import cn.dcube.ahead.kafka.producer.KafkaProducer;
+import cn.dcube.ahead.redis.service.RedisService;
 
 @Component
 public class Demo {
@@ -17,12 +18,16 @@ public class Demo {
 	private KafkaProducer kafkaProducer;
 
 	@Autowired
-	private ElasticService elasticHelper;
+	private ElasticService elasticService;
+
+	@Autowired
+	private RedisService redisService;
 
 	@PostConstruct
 	public void test() throws Exception {
 		// testKafka();
-		testES();
+		// testES();
+		testRedis();
 	}
 
 	public void testKafka() {
@@ -31,9 +36,15 @@ public class Demo {
 	}
 
 	public void testES() {
-		Set<String> indexes = elasticHelper.getIndices();
+		Set<String> indexes = elasticService.getIndices();
 		indexes.forEach(item -> {
 			System.out.println("es>>>>>>>>>>" + item);
+		});
+	}
+
+	public void testRedis() {
+		redisService.getKeys("*").forEach(item -> {
+			System.out.println("redis>>>>>>>>>>" + item);
 		});
 	}
 
