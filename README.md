@@ -17,11 +17,3 @@
 		|-- ahead-gateway-gRpc
 	|-- ahead-spark 大数据分析平台
 ```
-
-## 框架使用说明
-
-
-
-## 2021计划
-	完成Ahead-commons开发框架的搭建;
-	实现Ahead-gateway-springcloud的集成
