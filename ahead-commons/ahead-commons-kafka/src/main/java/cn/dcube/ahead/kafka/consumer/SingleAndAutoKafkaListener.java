@@ -1,15 +1,14 @@
 package cn.dcube.ahead.kafka.consumer;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 import cn.dcube.ahead.kafka.event.KafkaEvent;
@@ -24,21 +23,20 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
-@ConditionalOnExpression("${spring.kafka.consumer.batch:true}==true && ${spring.kafka.consumer.enable-auto-commit:true}==true")
-public class BatchAndAutoKafkaListener {
+@ConditionalOnExpression("${spring.kafka.consumer.batch:true}==false && ${spring.kafka.consumer.enable-auto-commit:true}==true")
+public class SingleAndAutoKafkaListener {
 
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
 
 	@KafkaListener(id = "batchAndAutoListener", containerFactory = "kafkaListenerFactory", topics = {
 			"#{'${spring.kafka.consumer.topics}'.split(',')}" })
-	public void listenBatchAndAuto(List<ConsumerRecord<?, ?>> records) {
+	public void listenBatchAndAuto(ConsumerRecord<?, ?> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
 		try {
-			if (records.size() > 0) {
-				log.debug("batch receive {} records.", records.size());
-			}
-			// 将事件publish发布出来
-			for (ConsumerRecord<?, ?> record : records) {
+			Optional<?> message = Optional.ofNullable(record.value());
+			if (message.isPresent()) {
+				log.debug("single receive record of topic {}.", topic);
+				// 将事件publish发布出来
 				eventPublisher.publishEvent(new KafkaEvent(record));
 			}
 		} catch (Exception e) {
