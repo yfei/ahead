@@ -221,12 +221,7 @@ public class ElasticService {
 		}
 		CreateIndexRequest request = new CreateIndexRequest(indexName);
 
-		// 设置分片
-		// buildSetting(request);
 		request.source(indexSQL, XContentType.JSON);
-
-		// 设置mapping
-		// request.mapping(indexSQL, XContentType.JSON);
 
 		CreateIndexResponse res = restHighLevelClient.indices().create(request, RequestOptions.DEFAULT);
 		if (!res.isAcknowledged()) {
@@ -477,21 +472,6 @@ public class ElasticService {
 	 */
 	public void buildSetting(CreateIndexRequest request) {
 		request.settings(Settings.builder().put("index.number_of_shards", 3).put("index.number_of_replicas", 1));
-	}
-
-	public void createMappingTest() throws IOException {
-		Settings.Builder builder = Settings.builder();
-		builder.put("index.number_of_shards", 3).put("index.number_of_replicas", 1);
-
-		XContentBuilder mapping = JsonXContent.contentBuilder().startObject().startObject("properties")
-		        .startObject("name").field("type", "text").field("analyzer", "ik_max_word").endObject()
-		        .startObject("birthday").field("type", "date").field("format", "yyyy-MM-dd").endObject().endObject()
-		        .endObject();
-
-		CreateIndexRequest request = new CreateIndexRequest("wenlong_test");
-		request.settings(builder);
-		request.mapping(mapping);
-		restHighLevelClient.indices().create(request, RequestOptions.DEFAULT);
 	}
 
 	/**

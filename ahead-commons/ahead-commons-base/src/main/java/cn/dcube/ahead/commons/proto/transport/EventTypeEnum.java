@@ -17,9 +17,9 @@ public enum EventTypeEnum {
 	EXTRACT_DATA("EVENT", "数据采集"),
 
 	/**
-	 * 定时任务类型
+	 * 配置信息
 	 */
-	SCHEDULED_TASK("TASK", "定时任务"),
+	SCHEDULED_TASK("CONFIG", "配置信息"),
 	/**
 	 * 心跳数据类型
 	 */

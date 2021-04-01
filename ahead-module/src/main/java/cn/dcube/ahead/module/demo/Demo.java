@@ -25,14 +25,19 @@ public class Demo {
 
 	@PostConstruct
 	public void test() throws Exception {
-		// testKafka();
+		testKafka();
 		// testES();
-		testRedis();
+		// testRedis();
 	}
 
 	public void testKafka() {
 		// 发送kafka消息,自定义的kafka listener里会对数据做处理
-		kafkaProducer.sendStringMessage("ahead-test", "this is a test");
+		for(int i=0;i<=10;i++) {
+			kafkaProducer.sendStringMessage("ahead-test", "this is a test");			
+		}
+		for(int i=0;i<=10;i++) {
+			kafkaProducer.sendStringMessage("ahead-util", "this is a test");			
+		}
 	}
 
 	public void testES() {

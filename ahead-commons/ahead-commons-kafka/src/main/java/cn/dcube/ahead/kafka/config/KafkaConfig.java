@@ -29,17 +29,17 @@ import org.springframework.kafka.listener.ContainerProperties;
  */
 @EnableKafka
 @Configuration
-@ConditionalOnProperty(prefix = "spring.kafka", name = {"bootstrap-servers" })
+@ConditionalOnProperty(prefix = "spring.kafka", name = { "bootstrap-servers" })
 public class KafkaConfig {
 
 	@Autowired
 	private KafkaProperties kafkaProperties;
-	
+
 	// Kafka并发消费参数
 	@Value("${spring.kafka.consumer.concurrency:1}")
 	private Integer concurrencys;
 
-	@Value("${spring.kafka.consumer.batch}")
+	@Value("${spring.kafka.consumer.batch:true}")
 	private Boolean batch;
 
 	@Value("${spring.kafka.consumer.ack-mode:MANUAL_IMMEDIATE}")
@@ -50,21 +50,22 @@ public class KafkaConfig {
 	 *
 	 * @return
 	 */
-	@Bean(name="kafkaListenerFactory")
+	@Bean(name = "kafkaListenerFactory")
 	@ConditionalOnMissingBean
 	public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, byte[]>> kafkaListenerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = kafkaListenerContainerFactory();
 		factory.setConcurrency(concurrencys);
 		return factory;
 	}
-	
+
 	@Bean
 	public KafkaTemplate<String, byte[]> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
-	
+
 	/**
 	 * 并发KafkaListener
+	 * 
 	 * @return
 	 */
 	private ConcurrentKafkaListenerContainerFactory<String, byte[]> kafkaListenerContainerFactory() {
@@ -74,7 +75,7 @@ public class KafkaConfig {
 		factory.setBatchListener(batch);
 		if (!kafkaProperties.getConsumer().getEnableAutoCommit()) {
 			// 设置提交偏移量的方式， MANUAL_IMMEDIATE 表示消费一条提交一次；MANUAL表示批量提交一次
-			factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
+			factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.valueOf(ackModel));
 		}
 		return factory;
 	}
@@ -86,14 +87,15 @@ public class KafkaConfig {
 	private Map<String, Object> consumerConfigs() {
 		return kafkaProperties.buildConsumerProperties();
 	}
-	
+
 	/**
 	 * producerFactory
+	 * 
 	 * @return
 	 */
 	private ProducerFactory<String, byte[]> producerFactory() {
 		DefaultKafkaProducerFactory<String, byte[]> producerFactory = new DefaultKafkaProducerFactory<>(
-		        producerConfigs());
+				producerConfigs());
 		return producerFactory;
 	}
 

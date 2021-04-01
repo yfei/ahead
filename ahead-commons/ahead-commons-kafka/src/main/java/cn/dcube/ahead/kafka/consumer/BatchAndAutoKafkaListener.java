@@ -4,12 +4,11 @@ import java.util.List;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
-import org.springframework.lang.Nullable;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import cn.dcube.ahead.kafka.event.KafkaEvent;
@@ -24,20 +23,18 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
-public class DefaultKafkaListener {
+@ConditionalOnExpression("${spring.kafka.consumer.batch:true}==true && ${spring.kafka.consumer.enable-auto-commit:true}==true")
+public class BatchAndAutoKafkaListener {
 
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
 
-	@Autowired
-	private KafkaProperties kafkaProperties;
-
-	@KafkaListener(id = "default", containerFactory = "kafkaListenerFactory", topics = {
-	        "#{'${spring.kafka.consumer.topics}'.split(',')}" })
-	public void listen(List<ConsumerRecord<?, ?>> records, Acknowledgment ack) {
+	@KafkaListener(id = "batchAndAutoListener", containerFactory = "kafkaListenerFactory", topics = {
+			"#{'${spring.kafka.consumer.topics}'.split(',')}" })
+	public void listenBatchAndAuto(List<ConsumerRecord<?, ?>> records) {
 		try {
 			if (records.size() > 0) {
-				log.debug("receive {} records from topic {} ", records.size(), records.get(0).topic());
+				log.debug("batch receive {} records.", records.size());
 			}
 			// 将事件publish发布出来
 			for (ConsumerRecord<?, ?> record : records) {
@@ -45,11 +42,6 @@ public class DefaultKafkaListener {
 			}
 		} catch (Exception e) {
 			log.error("Kafka监听异常" + e.getMessage(), e);
-		} finally {
-			// 手动提交偏移量
-			if (!kafkaProperties.getConsumer().getEnableAutoCommit()) {
-				ack.acknowledge();
-			}
 		}
 	}
 
