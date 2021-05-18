@@ -18,7 +18,10 @@ public class DPKafkaEventHandler implements IKafkaEventHandler {
 
 	@Override
 	public void handle(KafkaEvent event) {
-		// 处理kafka消息
+		// 处理kafka消息,这里采用责任链模式,
+		// 1. 回填资产
+		// 2. 回填业务系统
+		// 3. 
 
 	}
 

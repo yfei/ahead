@@ -25,5 +25,4 @@ public class AssetSyncServiceImpl implements IRedisSyncService {
 	public String getType() {
 		return RedisSyncContext.REDIS_ASSET;
 	}
-
 }
