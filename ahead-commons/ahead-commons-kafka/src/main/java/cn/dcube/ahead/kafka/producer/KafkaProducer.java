@@ -2,6 +2,7 @@ package cn.dcube.ahead.kafka.producer;
 
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.lang.Nullable;
@@ -13,6 +14,7 @@ import org.springframework.util.concurrent.SuccessCallback;
 import cn.dcube.ahead.commons.proto.transport.EventTransportEntity;
 import cn.dcube.ahead.commons.proto.util.ProtoBufUtils;
 import cn.dcube.ahead.commons.util.ZipUtils;
+import cn.dcube.ahead.kafka.config.KafkaConfig;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -24,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
+@ConditionalOnBean(KafkaConfig.class)
 public class KafkaProducer {
 
 	@Autowired

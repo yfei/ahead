@@ -1,0 +1,26 @@
+spring:
+  kafka:
+    bootstrap-servers: 192.168.31.16:9092
+    producer:
+      retries: 1 # 重试次数，默认Integer.MAX_VALUE
+      batch-size: 16384 # 同一批次内存大小（默认16K）
+      buffer-memory: 33554432 # 生产者内存缓存区大小(32M)
+      # key和value的序列化（默认，可以不设置）
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+      acks: 1 # ack应答机制，默认1，即只需要确认leader收到消息
+      #properties:
+        # 使用自定义的分区选择器
+        #{partitioner.class: com.msy.kafka.MyPartition, acks: all}
+    consumer:
+      group-id: default #消费组
+      enable-auto-commit: false # 是否自动提交
+      auto-offset-reset: latest # earliest：从头开始消费   latest：从最新的开始消费   默认latest
+      # key和value反序列化（默认，可以不设置）
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+      # 下面的配置为自定义配置,非spring.kafka原始配置
+      batch: false #是否批量消费,目前只支持true
+      concurrency: 6 #消费者并发数,
+      ack-mode: MANUAL_IMMEDIATE # 设置手动提交的时候，需要设置ackMode
+      topics: ahead-test,ahead-util # 监听的topic,多个逗号分开

@@ -44,5 +44,6 @@
 	<modules>
 		<module>ahead-commons</module>
 		<module>ahead-module</module>
+		<module>ahead-soc</module>
 	</modules>
 </project>

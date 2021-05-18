@@ -29,6 +29,7 @@ import org.springframework.kafka.listener.ContainerProperties;
  */
 @EnableKafka
 @Configuration
+// 存在spring.kafka.bootstrap-servers时才生效
 @ConditionalOnProperty(prefix = "spring.kafka", name = { "bootstrap-servers" })
 public class KafkaConfig {
 

@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.ApplicationEventPublisher;
@@ -12,6 +14,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
+import cn.dcube.ahead.kafka.config.KafkaConfig;
 import cn.dcube.ahead.kafka.event.KafkaEvent;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
+// 当使用kafka时并且配置批量、自动提交时生效
+@ConditionalOnBean(KafkaConfig.class)
 @ConditionalOnExpression("${spring.kafka.consumer.batch:true}==true && ${spring.kafka.consumer.enable-auto-commit:true}==true")
 public class BatchAndAutoKafkaListener {
 

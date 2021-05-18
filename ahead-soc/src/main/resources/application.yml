@@ -1,0 +1,26 @@
+# Spring配置
+spring:
+  application:
+    name: ahead-doc
+  # profiles:
+    # active: kafka,elastic,redis
+
+logging:
+  config: classpath:logback-spring.xml
+
+soc:
+  dp: # 充当dp角色时的配置
+    enable: true # 是否充当DP角色
+    consumer: # 消费者topic,需与application-kafka中的topic一致
+      topic: xxx,xxx
+    producer:
+      xxx: xx
+    org: # 回填org的配置
+      enable: true # 是否回填org
+      type: redis # 回填类型,目前仅支持redis
+      redis-key: org # redis中的key
+      fields: # 回填字段
+        orgName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
+        orgCode: orgCode
+  redis-sync: # 是否对redis数据进行同步
+    enable: true
