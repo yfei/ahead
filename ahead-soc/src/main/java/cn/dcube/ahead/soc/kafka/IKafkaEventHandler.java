@@ -1,7 +1,15 @@
 package cn.dcube.ahead.soc.kafka;
 
+import java.util.List;
+
 import cn.dcube.ahead.kafka.event.KafkaEvent;
 
+/**
+ * kafka消息处理接口
+ * 
+ * @author yangfei
+ *
+ */
 public interface IKafkaEventHandler {
 	/**
 	 * 数据处理
@@ -13,6 +21,6 @@ public interface IKafkaEventHandler {
 	 * 
 	 * @return
 	 */
-	public String getTopic();
+	public List<String> getTopic();
 
 }

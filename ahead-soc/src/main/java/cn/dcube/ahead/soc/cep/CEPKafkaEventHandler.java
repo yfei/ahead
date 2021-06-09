@@ -1,5 +1,7 @@
 package cn.dcube.ahead.soc.cep;
 
+import java.util.List;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,12 @@ public class CEPKafkaEventHandler implements IKafkaEventHandler{
 
 	@Override
 	public void handle(KafkaEvent event) {
-		// 处理kafka消息
+		// 处理CEP分析
 		
 	}
 
 	@Override
-	public String getTopic() {
+	public List<String> getTopic() {
 		// TODO Auto-generated method stub
 		return null;
 	}

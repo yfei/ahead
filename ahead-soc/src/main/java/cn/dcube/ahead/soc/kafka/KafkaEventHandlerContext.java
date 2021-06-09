@@ -12,6 +12,12 @@ import org.springframework.stereotype.Service;
 import cn.dcube.ahead.kafka.event.KafkaEvent;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * kafka消息处理上下文
+ * 
+ * @author yangfei
+ *
+ */
 @Service
 @Slf4j
 public class KafkaEventHandlerContext {
@@ -25,11 +31,16 @@ public class KafkaEventHandlerContext {
 	public void init() {
 		if (handlers != null) {
 			handlers.forEach(item -> {
-				if (handlerCategory.containsKey(item.getTopic())) {
-					log.warn("{}类型的KafkaEventHandler已存在!覆盖!", item.getTopic());
+				if (item.getTopic() != null) {
+					item.getTopic().forEach(topic -> {
+						if (handlerCategory.containsKey(topic)) {
+							log.warn("{}类型的KafkaEventHandler已存在!覆盖!", topic);
+						}
+						log.info("注册{}类型的KafkaEventHandler", topic);
+						handlerCategory.put(topic, item);
+
+					});
 				}
-				log.info("注册{}类型的KafkaEventHandler", item.getTopic());
-				handlerCategory.put(item.getTopic(), item);
 			});
 		}
 	}
