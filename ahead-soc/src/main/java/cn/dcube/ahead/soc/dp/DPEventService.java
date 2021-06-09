@@ -1,15 +1,14 @@
-package cn.dcube.ahead.soc.ia;
+package cn.dcube.ahead.soc.dp;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import cn.dcube.ahead.commons.proto.transport.EventTransportEntity;
 import cn.dcube.ahead.kafka.event.KafkaEvent;
+import cn.dcube.ahead.soc.dp.config.DPConfig;
 import cn.dcube.ahead.soc.dp.context.DPContext;
 import cn.dcube.ahead.soc.kafka.IKafkaEventHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +20,19 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Service
-@ConditionalOnExpression("${soc.ia.enable:false}==true") // 当配置为true时
+@ConditionalOnExpression("${soc.dp.enable:false}==true")
 @Slf4j
-public class IAKafkaEventHandler implements IKafkaEventHandler {
+public class DPEventService implements IKafkaEventHandler {
 
 	@Autowired
-	private Environment env;
+	private DPConfig config;
 
 	@Autowired
 	private DPContext dpContext;
+
+	public DPEventService() {
+		log.info("DP的Event数据处理服务已开启!");
+	}
 
 	@Override
 	public void handle(KafkaEvent event) {
@@ -42,7 +45,7 @@ public class IAKafkaEventHandler implements IKafkaEventHandler {
 
 	@Override
 	public List<String> getTopic() {
-		return Arrays.asList(env.getProperty("soc.dp.consumer.topic").split(","));
+		return config.getEvent().getConsumer();
 	}
 
 }

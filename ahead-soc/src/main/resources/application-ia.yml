@@ -4,12 +4,13 @@ soc:
     event:
       consumer: xxx # 消费的event的topic,需与application-kafka中的topic一致
       producer: xxx # 事件发送的topic
-      badIp:
-        enable: true # 是否回填恶意IP
-        type: redis # 回填类型,目前仅支持redis
-        redis-key: soc_org # redis中的key
-        fields: # 回填字段
-          orgName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
-          orgCode: orgCode
+      modules:
+        badIp:
+          enable: true # 是否回填恶意IP
+          type: redis # 回填类型,目前仅支持redis
+          redis-key: soc_org # redis中的key
+          fields: # 回填字段
+            orgName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
+            orgCode: orgCode
     monitor: # 状态监控
       enable: false

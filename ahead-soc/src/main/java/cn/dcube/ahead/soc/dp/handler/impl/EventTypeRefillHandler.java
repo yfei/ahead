@@ -4,29 +4,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.dcube.ahead.commons.proto.transport.EventTransportEntity;
-import cn.dcube.ahead.commons.util.StringUtils;
-import cn.dcube.ahead.soc.dp.handler.IDPHandler;
+import cn.dcube.ahead.soc.dp.handler.IRefillHandler;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 试件分类回填
+ * 
+ * @author yangfei
+ *
+ */
 @Service
 @Slf4j
-public class EventIdHandler implements IDPHandler {
+public class EventTypeRefillHandler implements IRefillHandler {
 
 	@Autowired
-	private AssetHandler assetHandler;
+	private AssetRefillHandler assetHandler;
 
 	@Override
 	public void handle(EventTransportEntity event) {
-		// 回填eventId
-		log.debug("处理event,回填id");
-		event.setEventId(StringUtils.getUUID());
+		// TODO 处理业务
 		if (this.getNext() != null) {
 			this.getNext().handle(event);
 		}
 	}
 
 	@Override
-	public IDPHandler getNext() {
-		return assetHandler;
+	public IRefillHandler getNext() {
+		return null;
 	}
 }

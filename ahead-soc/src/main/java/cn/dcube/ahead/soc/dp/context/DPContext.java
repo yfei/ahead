@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import cn.dcube.ahead.commons.proto.transport.EventTransportEntity;
 import cn.dcube.ahead.commons.thread.ThreadPoolUtil;
-import cn.dcube.ahead.soc.dp.handler.impl.AssetHandler;
+import cn.dcube.ahead.soc.dp.handler.impl.AssetRefillHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -19,7 +19,7 @@ public class DPContext {
 	private ExecutorService executorService;
 
 	@Autowired
-	private AssetHandler assetHandler;
+	private AssetRefillHandler assetHandler;
 
 	public DPContext() {
 		executorService = ThreadPoolUtil.createFixedThreadPool(4, "dp-handler");

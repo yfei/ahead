@@ -2,28 +2,29 @@ soc:
   dp: # 充当dp角色时的配置
     enable: true # 是否充当DP角色
     event:
-      consumer: xxx # 消费的event的topic,需与application-kafka中的topic一致
-      producer: xxx # 事件发送的topic
-      asset:
-        enable: true # 是否回填org
-        type: redis # 回填类型,目前仅支持redis
-        redis-key: soc_org # redis中的key
-        fields: # 回填字段
-          orgName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
-          orgCode: orgCode
-      org:
-        enable: true # 是否回填org
-        type: redis # 回填类型,目前仅支持redis
-        redis-key: soc_org # redis中的key
-        fields: # 回填字段
-          orgName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
-          orgCode: orgCode
-      business: # 业务系统
-        enable: true # 是否回填org
-        type: redis # 回填类型,目前仅支持redis
-        redis-key: soc_businessSystem # redis中的key
-        fields: # 回填字段
-          businessSystemName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
-          businessSystemCode: orgCode
+      consumer: [xxx,xxx] # 消费的event的topic,需与application-kafka中的topic一致
+      producer: [xxx,xxx] # 事件发送的topic
+      modules: # 业务处理模块
+        asset:
+          enable: true # 是否回填org
+          type: redis # 回填类型,目前仅支持redis
+          redis-key: soc_org # redis中的key
+          fields: # 回填字段
+            orgName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
+            orgCode: orgCode
+        org:
+          enable: true # 是否回填org
+          type: redis # 回填类型,目前仅支持redis
+          redis-key: soc_org # redis中的key
+          fields: # 回填字段
+            orgName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
+            orgCode: orgCode
+        business: # 业务系统
+          enable: true # 是否回填org
+          type: redis # 回填类型,目前仅支持redis
+          redis-key: soc_businessSystem # redis中的key
+          fields: # 回填字段
+            businessSystemName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
+            businessSystemCode: orgCode
     monitor: # 状态监控
       enable: false

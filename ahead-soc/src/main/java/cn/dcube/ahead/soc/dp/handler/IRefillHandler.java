@@ -2,10 +2,10 @@ package cn.dcube.ahead.soc.dp.handler;
 
 import cn.dcube.ahead.commons.proto.transport.EventTransportEntity;
 
-public interface IDPHandler {
+public interface IRefillHandler {
 
 	public void handle(EventTransportEntity event);
 
-	public IDPHandler getNext();
+	public IRefillHandler getNext();
 
 }
