@@ -9,11 +9,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.dcube.ahead.commons.proto.transport.EventTransportEntity;
-import cn.dcube.ahead.commons.util.StringUtils;
 import cn.dcube.ahead.redis.service.RedisService;
 import cn.dcube.ahead.soc.dp.config.DPConfig;
 import cn.dcube.ahead.soc.dp.config.DPEventModuleConfig;
 import cn.dcube.ahead.soc.dp.handler.IRefillHandler;
+import cn.dcube.ahead.utils.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**

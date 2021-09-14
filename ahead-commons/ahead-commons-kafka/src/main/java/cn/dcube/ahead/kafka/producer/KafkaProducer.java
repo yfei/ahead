@@ -13,8 +13,8 @@ import org.springframework.util.concurrent.SuccessCallback;
 
 import cn.dcube.ahead.commons.proto.transport.EventTransportEntity;
 import cn.dcube.ahead.commons.proto.util.ProtoBufUtils;
-import cn.dcube.ahead.commons.util.ZipUtils;
 import cn.dcube.ahead.kafka.config.KafkaConfig;
+import cn.dcube.ahead.utils.util.ZipUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**

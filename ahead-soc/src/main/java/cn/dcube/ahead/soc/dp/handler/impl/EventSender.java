@@ -23,6 +23,7 @@ public class EventSender implements IRefillHandler {
 
 	@PostConstruct
 	public void init() {
+		log.info("");
 	}
 
 	@Override

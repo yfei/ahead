@@ -9,12 +9,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.dcube.ahead.commons.proto.transport.EventTransportEntity;
-import cn.dcube.ahead.commons.util.StringUtils;
 import cn.dcube.ahead.redis.service.RedisService;
 import cn.dcube.ahead.soc.dp.handler.impl.BusinessSystemRefillHandler;
 import cn.dcube.ahead.soc.ia.config.IAConfig;
 import cn.dcube.ahead.soc.ia.config.IAEventModuleConfig;
 import cn.dcube.ahead.soc.ia.handler.IAHandler;
+import cn.dcube.ahead.utils.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
