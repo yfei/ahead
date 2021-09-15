@@ -3,7 +3,4 @@ spring:
   application:
     name: ahead-commons-core
   profiles:
-    active: kafka,elastic,redis
-
-logging:
-  config: classpath:logback-spring.xml
+    active: ds,logging,mybatis

@@ -2,21 +2,21 @@ package cn.dcube.ahead.mybatis.service.impl;
 
 import java.io.Serializable;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cn.dcube.ahead.core.entity.IEntity;
 import cn.dcube.ahead.mybatis.entity.MybatisEntity;
 import cn.dcube.ahead.mybatis.mapper.AheadBaseMapper;
 import cn.dcube.ahead.mybatis.service.IMybatisService;
 
-@Service
-@MapperScan("cn.dcube.ahead.core")
-public class MybatisServiceImpl implements IMybatisService {
+/**
+ * 封装mybatis通用service.暂时没有好的思路,暂停
+ * 
+ * @author yangfei
+ *
+ */
+@Deprecated
+public class AbstractMyBatisService implements IMybatisService {
 
-	@Autowired
-	private AheadBaseMapper<MybatisEntity> mapper;
+	protected AheadBaseMapper<MybatisEntity> mapper;
 
 	@Override
 	public <T extends IEntity> int save(T entity) {

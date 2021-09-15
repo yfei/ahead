@@ -1,9 +1,14 @@
 package cn.dcube.ahead.jpa.service;
 
 import cn.dcube.ahead.core.service.IService;
-import cn.dcube.ahead.mybatis.entity.MybatisEntity;
-import cn.dcube.ahead.mybatis.mapper.AheadBaseMapper;
 
+/**
+ * 抽象服务类
+ * 
+ * @author yangfei
+ *
+ */
+@Deprecated
 public interface IJpaService extends IService {
-	
+
 }

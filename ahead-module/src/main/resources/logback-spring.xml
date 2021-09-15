@@ -54,8 +54,12 @@
 	<!-- 指定需要关闭输出日志的包 -->
 	<logger name="org.apache" level="ERROR"></logger>
 	<logger name="org.springframework" level="ERROR"></logger>
+	<logger name="org.hibernate" level="ERROR"></logger>
+	<logger name="org.mybatis" level="ERROR"></logger>
+	<logger name="com.baomidou" level="ERROR"></logger>
+	
 	<!-- addtivity:是否向上级loger传递打印信息。默认是true。 -->
-	<root level="debug">
+	<root level="info">
 		<appender-ref ref="consoleLog" />
 		<appender-ref ref="fileInfoLog" />
 		<appender-ref ref="fileErrorLog" />

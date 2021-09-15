@@ -1,18 +1,20 @@
 package cn.dcube.ahead.jpa.repository;
 
+import java.io.Serializable;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.PagingAndSortingRepository;
+
+import cn.dcube.ahead.core.entity.IEntity;
 
 /**
- * 
- * Ahead Repository
- * 
+ * 抽象接口
  * @author yangfei
  *
  * @param <T>
  * @param <ID>
  */
 @NoRepositoryBean
-public interface AheadBaseRepository<T, ID> extends PagingAndSortingRepository<T, ID> {
+public interface AheadBaseRepository<T extends IEntity, ID extends Serializable> extends JpaRepository<T, ID> {
 
 }

@@ -1,2 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.dcube.ahead.core.context.SpringContext
+  cn.dcube.ahead.core.context.SpringContext,\
+  cn.dcube.ahead.udf.dao.impl.JpaDaoImpl,\
+  cn.dcube.ahead.udf.service.impl.UDFServiceImpl

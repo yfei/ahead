@@ -52,12 +52,6 @@
             <artifactId>pagehelper</artifactId>
             <version>5.1.11</version>
         </dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<!-- 基础 -->
 		<dependency>
 			<groupId>cn.dcube</groupId>

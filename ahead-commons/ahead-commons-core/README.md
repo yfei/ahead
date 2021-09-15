@@ -8,7 +8,7 @@
 	|-- jpa JPA-Hibernate和JDBC支持
 		|-- repository  抽象repository
 	|-- udf 自定义查询,底层为JPA-hibernate
-	|-- mubatis  mybatis支持
+	|-- mybatis  mybatis支持
 ```
 
 ## 使用说明

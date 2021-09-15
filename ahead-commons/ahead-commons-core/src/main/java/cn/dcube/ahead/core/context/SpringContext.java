@@ -1,10 +1,13 @@
 package cn.dcube.ahead.core.context;
 
 import org.springframework.beans.BeansException;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+@Component
 public class SpringContext implements ApplicationContextAware {
 
 	/**
@@ -30,6 +33,10 @@ public class SpringContext implements ApplicationContextAware {
 	@SuppressWarnings("unchecked")
 	public static <T> T getBean(String beanName) {
 		Assert.notNull(beanName, "beanName cannot be empty!");
-		return (T) appContext.getBean(beanName);
+		Object bean = appContext.getBean(beanName);
+		if (bean != null) {
+			return (T) bean;
+		}
+		return null;
 	}
 }

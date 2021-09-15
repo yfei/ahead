@@ -4,11 +4,10 @@ import java.time.Instant;
 
 import org.springframework.data.annotation.CreatedDate;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
 
-import cn.dcube.ahead.core.entity.IEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * mybatis实体抽象类
@@ -17,13 +16,20 @@ import lombok.Data;
  *
  */
 @Data
-public abstract class MybatisEntity implements IEntity {
-	@TableId(type = IdType.AUTO)
-	private Long id;
+@EqualsAndHashCode(callSuper=false)
+public abstract class MybatisEntity extends MybatisOptimisticLockEntity {
+
+	@TableField("create_user")
+	private String createUser;
+
+	@TableField("last_modify_user")
+	private String lastModifyUser;
 
 	@CreatedDate
+	@TableField("create_time")
 	private Instant createTime;
-	
+
 	@CreatedDate
-	private Instant lastModifyTime; 
+	@TableField("last_modify_time")
+	private Instant lastModifyTime;
 }

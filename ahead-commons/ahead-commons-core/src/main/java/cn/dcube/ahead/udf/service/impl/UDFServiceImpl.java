@@ -43,7 +43,7 @@ import cn.dcube.ahead.utils.exception.ServiceException;
  * @since 1.0
  */
 @Service(value = "baseService")
-public class DefaultServiceImpl implements IUDFService {
+public class UDFServiceImpl implements IUDFService {
 	/**
 	 * the logger
 	 */

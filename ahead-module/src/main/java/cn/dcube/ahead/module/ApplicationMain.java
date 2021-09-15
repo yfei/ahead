@@ -3,7 +3,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+import cn.dcube.ahead.core.annotation.AheadApplication;
+
+@AheadApplication
 public class ApplicationMain {
 
 	public static void main(String[] args) {
