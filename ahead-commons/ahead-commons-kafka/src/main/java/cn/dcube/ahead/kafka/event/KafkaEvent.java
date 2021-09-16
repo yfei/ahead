@@ -17,6 +17,8 @@ import lombok.Setter;
 @Setter
 public class KafkaEvent extends ApplicationEvent {
 
+	private static final long serialVersionUID = -8206408664339671568L;
+
 	public String topic;
 
 	public Object key;

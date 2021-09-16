@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ProtoBufUtils {
 
+	// KafkaConsumerUtils
 	/** 避免每次序列化都重新申请Buffer空间 */
 	private static LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
 

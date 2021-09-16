@@ -1,40 +1,37 @@
-package cn.dcube.ahead.mybatis.entity;
+package cn.dcube.ahead.jpa.entity;
 
 import java.time.Instant;
+
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * mybatis实体抽象类
- * 
- * @author yangfei
- *
- */
 @Data
-@EqualsAndHashCode(callSuper=false)
-public abstract class MybatisEntity extends MybatisOptimisticLockEntity {
+@EqualsAndHashCode(callSuper = false)
+@MappedSuperclass
+public class AuditJpaEntity extends OptimisticLockJPAEntity {
 
 	@CreatedBy
-	@TableField("create_user")
+	@Column(name = "create_user")
 	private String createUser;
 
 	@LastModifiedBy
-	@TableField("last_modify_user")
+	@Column(name = "last_modify_user")
 	private String lastModifyUser;
 
 	@CreatedDate
-	@TableField("create_time")
+	@Column(name = "create_time")
 	private Instant createTime;
 
 	@LastModifiedDate
-	@TableField("last_modify_time")
+	@Column(name = "last_modify_time")
 	private Instant lastModifyTime;
+
 }

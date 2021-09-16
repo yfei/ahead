@@ -5,6 +5,7 @@ mybatis-plus:
   global-config:
     id-type: 1  #0:数据库ID自增   1:用户输入id
     db-column-underline: false
+    banner: false
     refresh-mapper: true
     configuration:
       map-underscore-to-camel-case: true

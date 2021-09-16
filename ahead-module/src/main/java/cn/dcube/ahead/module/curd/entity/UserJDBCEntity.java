@@ -1,15 +1,15 @@
 package cn.dcube.ahead.module.curd.entity;
 
 
-import javax.persistence.Entity;
+import org.springframework.data.relational.core.mapping.Table;
 
-import cn.dcube.ahead.jpa.entity.AuditJpaEntity;
+import cn.dcube.ahead.jdbc.entity.AuditJDBCEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
-@Entity(name="tb_user_mybatis")
-public class UserJPAEntity extends AuditJpaEntity {
+@Table("tb_user_mybatis")
+public class UserJDBCEntity extends AuditJDBCEntity {
 	
 	private String name;
 	

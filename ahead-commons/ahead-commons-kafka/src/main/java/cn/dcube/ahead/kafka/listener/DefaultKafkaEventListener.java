@@ -24,10 +24,10 @@ public abstract class DefaultKafkaEventListener implements ApplicationListener<K
 			// 如果是字符串
 			this.handleString(event);
 		} else {
-			log.warn("暂不支持的Kafka数据类型!");
+			this.handleSpecial(event);
 		}
 		// TODO 这里进行topic的统计
-		this.handleSpecial(event);
+		this.statistics(event);
 	}
 
 	/**
@@ -50,4 +50,11 @@ public abstract class DefaultKafkaEventListener implements ApplicationListener<K
 	 * @param event
 	 */
 	protected abstract void handleSpecial(KafkaEvent event);
+
+	/**
+	 * 数据统计
+	 * 
+	 * @param event
+	 */
+	protected abstract void statistics(KafkaEvent event);
 }

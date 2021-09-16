@@ -6,6 +6,6 @@ import cn.dcube.ahead.jpa.repository.AheadBaseRepository;
 import cn.dcube.ahead.module.curd.entity.UserJPAEntity;
 
 @Repository
-public interface UserRepository extends AheadBaseRepository<UserJPAEntity,Long> {
+public interface UserJPARepository extends AheadBaseRepository<UserJPAEntity,Long> {
 
 }

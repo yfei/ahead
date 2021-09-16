@@ -1,7 +1,5 @@
 # 数据源配置
 spring:
-  jpa:
-    show_sql: true # jpa 打印sql
   datasource: # 德鲁伊数据源配置
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver

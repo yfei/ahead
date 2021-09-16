@@ -1,6 +1,5 @@
-package cn.dcube.ahead.soc.kafka;
+package cn.dcube.ahead.module.kafka.listener;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.dcube.ahead.kafka.event.KafkaEvent;
@@ -17,13 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class KafkaEventListener extends DefaultKafkaEventListener {
 
-	@Autowired
-	private KafkaEventHandlerContext context;
-
 	@Override
 	protected void handleProtobuf(KafkaEvent event) {
 		try {
-			context.handle(event);
+			System.out.println(event);
 		} catch (Exception e) {
 			log.error("", e);
 		}
@@ -43,7 +39,7 @@ public class KafkaEventListener extends DefaultKafkaEventListener {
 	@Override
 	protected void statistics(KafkaEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

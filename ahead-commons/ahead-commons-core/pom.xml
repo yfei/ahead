@@ -59,11 +59,5 @@
 			<version>${ahead.version}</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>cn.dcube</groupId>
-			<artifactId>ahead-commons-base</artifactId>
-			<version>${ahead.version}</version>
-		</dependency>
-
 	</dependencies>
 </project>
