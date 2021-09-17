@@ -1,8 +1,8 @@
 soc:
   ia: # 充当IA角色时的配置
-    enable: true # 是否充当IA角色
+    enable: false # 是否充当IA角色
     id: 1
-    refill-thread: 4 # 回填线程数量
+    match-thread: 4 # 回填线程数量
     consumer-topics:
       - topic: sdap-eventbase-dp
         type: TRANSPORT
