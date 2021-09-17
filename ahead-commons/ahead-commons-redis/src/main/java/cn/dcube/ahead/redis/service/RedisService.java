@@ -113,5 +113,9 @@ public class RedisService {
 	public <T> Map<String, T> getCacheMap(final String key) {
 		return redisTemplate.opsForHash().entries(key);
 	}
+	
+	public <T> Set<T> zrangeByScore(final String key, double min,double max,int offset,int limit) {
+		return redisTemplate.opsForZSet().rangeByScore(key, min, max, offset, limit);
+	}
 
 }

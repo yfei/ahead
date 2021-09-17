@@ -32,7 +32,7 @@ public class CurdService {
 	@Autowired
 	UDFServiceImpl service;
 
-	@PostConstruct
+	// @PostConstruct
 	public void test() throws Exception {
 		// 测试JPA
 		UserJPAEntity user = new UserJPAEntity();

@@ -1,16 +1,40 @@
 soc:
-  ia: # 充当dp角色时的配置
-    enable: true # 是否充当DP角色
-    event:
-      consumer: xxx # 消费的event的topic,需与application-kafka中的topic一致
-      producer: xxx # 事件发送的topic
-      modules:
-        badIp:
-          enable: true # 是否回填恶意IP
-          type: redis # 回填类型,目前仅支持redis
-          redis-key: soc_org # redis中的key
-          fields: # 回填字段
-            orgName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
-            orgCode: orgCode
+  ia: # 充当IA角色时的配置
+    enable: true # 是否充当IA角色
+    id: 1
+    refill-thread: 4 # 回填线程数量
+    consumer-topics:
+      - topic: sdap-eventbase-dp
+        type: TRANSPORT
+        key: Event
+    modules: # 回填业务处理模块
+      src_badIp: # 源恶意IP回填
+        enable: true
+        type: redis # 回填类型,目前仅支持redis
+        redis-index: soc_bad_ip # redis中的索引
+        redis-key: srcipv4 # 查询key,多个以|分隔
+        fill-if-not-null: false # 如果没有值时,是否回填
+        fields:
+          a: b
+      dst_badIp: # 目的恶意IP回填
+        enable: true # 是否回填org
+        type: redis # 回填类型,目前仅支持redis
+        redis-index: soc_assets # redis中的索引
+        redis-key: int_srcipv4 # 查询key,多个以|分隔
+        fill-if-not-null: true # 如果没有值时,是否回填
+        fields: # 回填字段
+          srcAssetId: id # key为eventbase中的字段名,value为redis中JSON格式的key
+          srcAssetLevel: assetsLevel
+          srcOrgId: deptId
+      badUrl: # 源业务系统回填
+        enable: true # 是否回填org
+        type: redis # 回填类型,目前仅支持redis
+        redis-index: soc_business # redis中的索引
+        redis-key: int_srcipv4|srcport # 查询key,多个以|分隔
+        redis-key-join: ":" # redisKey值的拼接方式,默认为"_"
+        fill-if-not-null: true # 如果没有值时,是否回填
+        fields: # 回填字段
+          srcBusiName: systemName # key为eventbase中的字段名,value为redis中JSON格式的key
+          srcBusiId: id
     monitor: # 状态监控
       enable: false

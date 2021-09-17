@@ -1,26 +1,25 @@
 package cn.dcube.ahead.kafka.config;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Listener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.listener.ContainerProperties;
 
 /**
  * Kafka配置项
@@ -31,17 +30,30 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
  */
 @EnableKafka
 @Configuration
-@ConfigurationProperties(prefix = "spring.kafka")
 // 存在spring.kafka.bootstrap-servers时才生效
-@ConditionalOnBean(KafkaProperties.class)
 @ConditionalOnProperty(prefix = "spring.kafka", name = { "bootstrap-servers" })
 public class KafkaConfig {
 
 	@Autowired
 	private KafkaProperties kafkaProperties;
 
-	@Value("${spring.kafka.topics.consumer}")
-	private List<KafkaTopic> consumerTopics;
+	@Autowired
+	private KafkaListenerEndpointRegistry registry;
+
+	public boolean isBatchListener() {
+		return kafkaProperties.getListener().getType().compareTo(Listener.Type.SINGLE) != 0;
+	}
+
+	public boolean isAutoCommit() {
+		return kafkaProperties.getConsumer().getEnableAutoCommit();
+	}
+
+	public boolean isManual() {
+		return kafkaProperties.getListener().getAckMode().compareTo(ContainerProperties.AckMode.MANUAL) == 0
+				|| kafkaProperties.getListener().getAckMode()
+						.compareTo(ContainerProperties.AckMode.MANUAL_IMMEDIATE) == 0;
+
+	}
 
 	/**
 	 * 普通主题监听器配置
@@ -53,12 +65,12 @@ public class KafkaConfig {
 	public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, byte[]>> kafkaListenerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = kafkaListenerContainerFactory();
 		factory.setConcurrency(kafkaProperties.getListener().getConcurrency());
+		// 是否批量
+		factory.setBatchListener(isBatchListener());
+		// 设置提交偏移量的方式
+		// MANUAL_IMMEDIATE 表示消费一条提交一次；MANUAL表示批量提交一次
+		factory.getContainerProperties().setAckMode(kafkaProperties.getListener().getAckMode());
 		return factory;
-	}
-
-	@Bean
-	public KafkaTemplate<String, byte[]> kafkaTemplate() {
-		return new KafkaTemplate<>(producerFactory());
 	}
 
 	/**
@@ -78,6 +90,11 @@ public class KafkaConfig {
 
 	private Map<String, Object> consumerConfigs() {
 		return kafkaProperties.buildConsumerProperties();
+	}
+
+	@Bean
+	public KafkaTemplate<String, byte[]> kafkaTemplate() {
+		return new KafkaTemplate<>(producerFactory());
 	}
 
 	/**

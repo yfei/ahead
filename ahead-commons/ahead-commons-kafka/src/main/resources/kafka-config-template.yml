@@ -1,6 +1,7 @@
 spring:
   # 所有的time为毫秒。topics为自定义结构
   kafka:
+    bootstrap-servers: 192.168.31.36:9092
     producer:
       bootstrap-servers: 192.168.31.36:9092
       batch-size: 16785  #一次最多发送数据量

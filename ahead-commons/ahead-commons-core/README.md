@@ -17,7 +17,7 @@
 ```
 1. 定义表结构
 2. 定义实体对象(@Table和@Column注解使用spring.data包中),实体对象需继承AuditJDBCEntity
-3. 定义Repository,继承AheadJDBCRepository
+3. 定义Repository,继承AheadJDBCRepository(务必不能继承AheadJDBCRepository,否则会报错)
 ```
 #### 使用Spring-data-jpa
 ```

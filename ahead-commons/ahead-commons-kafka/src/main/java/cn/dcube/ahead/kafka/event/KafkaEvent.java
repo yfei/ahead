@@ -9,7 +9,8 @@ import lombok.Setter;
 /**
  * 
  * kafkaEvent
- * @author：yangfei<br> 
+ * 
+ * @author：yangfei<br>
  * @date：2021年3月30日下午2:46:40
  * @since 1.0
  */

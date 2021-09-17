@@ -16,81 +16,80 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EventTransportEntity {
+
+	public enum MessageType {
+		PROTOBUF, TRANSPORT, STRING, STRING_JSON
+	}
+
 	/**
 	 * 事件唯一标识
 	 */
 	@Tag(1)
 	private String eventId;
-
 	/**
-	 * 事件分类--大类
+	 * 事件名称
 	 */
 	@Tag(2)
-	private Integer clazz;
-
+	private String eventName;
 	/**
-	 * 事件分类--子类
+	 * 事件值(简单值)
 	 */
 	@Tag(3)
-	private Integer subClazz;
-
-	/**
-	 * 事件分类--小类
-	 */
-	@Tag(4)
-	private Integer family;
-
-	/**
-	 * 客户id
-	 */
-	@Tag(5)
-	private Integer customerId;
-
-	/**
-	 * 设备厂商
-	 */
-	@Tag(6)
-	private Long sensorMask;
-
-	/**
-	 * 设备型号
-	 */
-	@Tag(7)
-	private Long sensorModel;
-
-	/**
-	 * 设备IP
-	 */
-	@Tag(8)
-	private String sensorIp;
-
-	/**
-	 * 五元组 srcip+srcport+dstip+dstport+protocol
-	 */
-	@Tag(9)
-	private String srcIp;
-
-	@Tag(10)
-	private String dstIp;
-
-	@Tag(11)
-	private Integer srcPort;
-
-	@Tag(12)
-	private Integer dstPort;
-
-	@Tag(13)
-	private String protocol;
-
+	private String eventVal;
 	/**
 	 * 事件类型
 	 */
-	@Tag(14)
+	@Tag(4)
 	private EventTypeEnum eventType;
 	/**
 	 * 事件数据(按需传参)
 	 */
-	@Tag(15)
+	@Tag(5)
 	private Object eventData;
+
+	/**
+	 * @param eventId   事件ID
+	 * @param eventName 事件名称
+	 * @param eventType 事件类型
+	 */
+	public EventTransportEntity(String eventId, String eventName, EventTypeEnum eventType) {
+		this(eventId, eventName, eventType, null);
+	}
+
+	/**
+	 * @param eventId   事件ID
+	 * @param eventName 事件名称
+	 * @param eventVal  事件值(简单值)
+	 * @param eventType 事件类型
+	 */
+	public EventTransportEntity(String eventId, String eventName, String eventVal, EventTypeEnum eventType) {
+		this(eventId, eventName, eventVal, eventType, null);
+	}
+
+	/**
+	 * @param eventId   事件ID
+	 * @param eventName 事件名称
+	 * @param eventType 事件类型
+	 * @param eventData 事件数据(按需传参)
+	 */
+	public EventTransportEntity(String eventId, String eventName, EventTypeEnum eventType, Object eventData) {
+		this(eventId, eventName, null, eventType, eventData);
+	}
+
+	/**
+	 * @param eventId   事件ID
+	 * @param eventName 事件名称
+	 * @param eventVal  事件值(简单值)
+	 * @param eventType 事件类型
+	 * @param eventData 事件数据(按需传参)
+	 */
+	public EventTransportEntity(String eventId, String eventName, String eventVal, EventTypeEnum eventType,
+			Object eventData) {
+		this.eventId = eventId;
+		this.eventName = eventName;
+		this.eventVal = eventVal;
+		this.eventType = eventType;
+		this.eventData = eventData;
+	}
 
 }

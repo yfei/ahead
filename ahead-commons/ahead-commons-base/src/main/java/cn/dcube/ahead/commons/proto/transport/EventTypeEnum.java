@@ -11,22 +11,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum EventTypeEnum {
-	/**
-	 * 原始数据采集类型
-	 */
-	EXTRACT_DATA("EVENT", "数据采集"),
-
-	/**
-	 * 配置信息
-	 */
-	SCHEDULED_TASK("CONFIG", "配置信息"),
-	/**
-	 * 心跳数据类型
-	 */
+	EVENT("EVENT", "原始事件"), 
+	CEPEVENT("CEPEVENT", "CEP事件"), 
+	SNPEVENT("SNPEVENT", "CEP事件"), 
+	WEPEVENT("WEPEVENT", "CEP事件"),
+	CONFIG("CONFIG", "配置信息"),
+	RULE("RULE", "规则"),
 	HEART_BEAT("HEAR_BEAT", "心跳数据"),
-	/**
-	 * 其他类型
-	 */
 	OTHER("OTHER", "其他");
 
 	private String code;

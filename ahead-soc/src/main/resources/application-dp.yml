@@ -1,30 +1,65 @@
 soc:
   dp: # 充当dp角色时的配置
     enable: true # 是否充当DP角色
-    event:
-      consumer: [xxx,xxx] # 消费的event的topic,需与application-kafka中的topic一致
-      producer: [xxx,xxx] # 事件发送的topic
-      modules: # 业务处理模块
-        asset:
-          enable: true # 是否回填org
-          type: redis # 回填类型,目前仅支持redis
-          redis-key: soc_org # redis中的key
-          fields: # 回填字段
-            orgName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
-            orgCode: orgCode
-        org:
-          enable: true # 是否回填org
-          type: redis # 回填类型,目前仅支持redis
-          redis-key: soc_org # redis中的key
-          fields: # 回填字段
-            orgName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
-            orgCode: orgCode
-        business: # 业务系统
-          enable: true # 是否回填org
-          type: redis # 回填类型,目前仅支持redis
-          redis-key: soc_businessSystem # redis中的key
-          fields: # 回填字段
-            businessSystemName: orgName # key为eventbase中的字段名,value为redis中JSON格式的key
-            businessSystemCode: orgCode
+    id: 1
+    refill-thread: 4 # 回填线程数量
+    consumer-topics:
+      - topic: sdap-eventbase-collector
+        type: STRING_JSON
+        key: Event
+    modules: # 回填业务处理模块
+      csf: # csf回填
+        enable: false
+        type: redis # 回填类型,目前仅支持redis
+        redis-index: soc_csf # redis中的索引
+        redis-key: raw_id|sensor_model # 查询key,多个以|分隔
+        fill-if-not-null: false # 如果没有值时,是否回填
+        fields:
+          a: b
+      srcipv4_asset: # 源IP回填
+        enable: true # 是否回填org
+        type: redis # 回填类型,目前仅支持redis
+        redis-index: soc_assets # redis中的索引
+        redis-key: int_srcipv4 # 查询key,多个以|分隔
+        fill-if-not-null: true # 如果没有值时,是否回填
+        fields: # 回填字段
+          srcAssetId: id # key为eventbase中的字段名,value为redis中JSON格式的key
+          srcAssetLevel: assetsLevel
+          srcOrgId: deptId
+      srcipv4_business: # 源业务系统回填
+        enable: true # 是否回填org
+        type: redis # 回填类型,目前仅支持redis
+        redis-index: soc_business # redis中的索引
+        redis-key: int_srcipv4|srcport # 查询key,多个以|分隔
+        redis-key-join: ":" # redisKey值的拼接方式,默认为"_"
+        fill-if-not-null: true # 如果没有值时,是否回填
+        fields: # 回填字段
+          srcBusiName: systemName # key为eventbase中的字段名,value为redis中JSON格式的key
+          srcBusiId: id
+      dstipv4_asset: # 目的业务系统回填
+        enable: true # 是否回填org
+        type: redis # 回填类型,目前仅支持redis
+        redis-index: soc_assets # redis中的索引
+        redis-key: int_dstipv4 # 查询key,多个以|分隔
+        fill-if-not-null: true # 如果没有值时,是否回填
+        fields: # 回填字段
+          dstAssetId: id # key为eventbase中的字段名,value为redis中JSON格式的key
+          dstAssetLevel: assetsLevel
+          dstOrgId: deptId
+      dstipv4_business: # 目的业务系统回填
+        enable: true # 是否回填org
+        type: redis # 回填类型,目前仅支持redis
+        redis-index: soc_business # redis中的索引
+        redis-key: int_dstipv4|dstport # 查询key,多个以|分隔
+        redis-key-join: ":" # redisKey值的拼接方式,默认为"_"
+        fill-if-not-null: true # 如果没有值时,是否回填
+        fields: # 回填字段
+          srcBusiName: systemName # key为eventbase中的字段名,value为redis中JSON格式的key
+          srcBusiId: id
+      GEO: # GEO 回填配置
+         enable: true # 是否回填org
+         ipFields: 
+           src: int_srcipv4
+           dst: int_dstipv4
     monitor: # 状态监控
       enable: false

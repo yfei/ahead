@@ -3,4 +3,4 @@ spring:
   application:
     name: ahead-commons-core
   profiles:
-    active: ds,logging,jpa,mybatis
+    active: logging,ds,jpa,mybatis,redis

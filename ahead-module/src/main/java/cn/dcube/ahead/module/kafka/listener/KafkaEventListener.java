@@ -17,23 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 public class KafkaEventListener extends DefaultKafkaEventListener {
 
 	@Override
-	protected void handleProtobuf(KafkaEvent event) {
+	protected void handle(KafkaEvent event) {
 		try {
 			System.out.println(event);
 		} catch (Exception e) {
 			log.error("", e);
 		}
 
-	}
-
-	@Override
-	protected void handleString(KafkaEvent event) {
-		log.warn("暂未实现");
-	}
-
-	@Override
-	protected void handleSpecial(KafkaEvent event) {
-		log.warn("暂未实现");
 	}
 
 	@Override

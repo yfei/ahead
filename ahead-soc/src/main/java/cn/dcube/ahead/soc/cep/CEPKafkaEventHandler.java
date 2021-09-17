@@ -5,22 +5,23 @@ import java.util.List;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 
+import cn.dcube.ahead.commons.proto.transport.EventTransportEntity.MessageType;
 import cn.dcube.ahead.kafka.event.KafkaEvent;
-import cn.dcube.ahead.soc.kafka.IKafkaEventHandler;
+import cn.dcube.ahead.soc.kafka.handler.IKafkaEventHandler;
+import cn.dcube.ahead.soc.kafka.model.KafkaTopic;
 
 @Service
 @ConditionalOnExpression("${soc.dp.enable:false}==true") // 当配置为true时
-public class CEPKafkaEventHandler implements IKafkaEventHandler{
+public class CEPKafkaEventHandler implements IKafkaEventHandler {
 
 	@Override
-	public void handle(KafkaEvent event) {
+	public void handle(MessageType type,KafkaEvent event) {
 		// 处理CEP分析
-		
+
 	}
 
 	@Override
-	public List<String> getTopic() {
-		// TODO Auto-generated method stub
+	public List<KafkaTopic> getTopic() {
 		return null;
 	}
 

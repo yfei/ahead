@@ -12,7 +12,9 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.SuccessCallback;
 
 import cn.dcube.ahead.commons.proto.transport.EventTransportEntity;
+import cn.dcube.ahead.commons.proto.transport.EventTransportEntity.MessageType;
 import cn.dcube.ahead.commons.proto.util.ProtoBufUtils;
+import cn.dcube.ahead.kafka.coder.ByteMessageParser;
 import cn.dcube.ahead.kafka.config.KafkaConfig;
 import cn.dcube.ahead.utils.util.ZipUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -32,65 +34,57 @@ public class KafkaProducer {
 	@Autowired
 	private KafkaTemplate<String, byte[]> kafkaTemplate;
 
-	/**
-	 * 发布消息
-	 *
-	 * @param topic
-	 * @param eventTransportEntity
-	 */
+	public void sendMessage(String topic, MessageType messageType, EventTransportEntity eventTransportEntity) {
+		byte[] protobufData = ByteMessageParser.serializer(topic, messageType, eventTransportEntity);
+		sendByteMessage(topic, protobufData, null, null);
+	}
+
+	public void sendMessage(String topic, MessageType messageType, EventTransportEntity eventTransportEntity,
+			@Nullable SuccessCallback<SendResult<String, byte[]>> successCallback,
+			@Nullable FailureCallback failureCallback) {
+		byte[] protobufData = ByteMessageParser.serializer(topic, messageType, eventTransportEntity);
+		sendByteMessage(topic, protobufData, successCallback, failureCallback);
+	}
+
 	public void sendProtobufMessage(String topic, EventTransportEntity eventTransportEntity) {
-		// 序列化成ProtoBuf数据结构
+		byte[] protobufData = ByteMessageParser.serializer(topic, MessageType.PROTOBUF, eventTransportEntity);
+		sendByteMessage(topic, protobufData, null, null);
+	}
+
+	public void sendProtobufMessage(String topic, EventTransportEntity eventTransportEntity,
+			@Nullable SuccessCallback<SendResult<String, byte[]>> successCallback,
+			@Nullable FailureCallback failureCallback) {
+		byte[] protobufData = ByteMessageParser.serializer(topic, MessageType.PROTOBUF, eventTransportEntity);
+		sendByteMessage(topic, protobufData, successCallback, failureCallback);
+	}
+
+	public void sendTransportMessage(String topic, EventTransportEntity eventTransportEntity) {
 		byte[] protobufData = ZipUtils.gZip(ProtoBufUtils.serializer(eventTransportEntity));
 		sendByteMessage(topic, protobufData, null, null);
 	}
 
-	/**
-	 * 发布消息
-	 *
-	 * @param topic
-	 * @param eventTransportEntity
-	 */
-	public void sendProtobufMessage(String topic, EventTransportEntity eventTransportEntity,
-	        @Nullable SuccessCallback<SendResult<String, byte[]>> successCallback,
-	        @Nullable FailureCallback failureCallback) {
-		// 序列化成ProtoBuf数据结构
+	public void sendTransportMessage(String topic, EventTransportEntity eventTransportEntity,
+			@Nullable SuccessCallback<SendResult<String, byte[]>> successCallback,
+			@Nullable FailureCallback failureCallback) {
 		byte[] protobufData = ZipUtils.gZip(ProtoBufUtils.serializer(eventTransportEntity));
 		sendByteMessage(topic, protobufData, successCallback, failureCallback);
 	}
 
-	/**
-	 * 发布消息
-	 *
-	 * @param topic
-	 * @param message
-	 */
 	public void sendStringMessage(String topic, String message) {
 		byte[] msgByte = message.getBytes();
 		sendByteMessage(topic, msgByte, null, null);
 	}
 
-	/**
-	 * 发布消息
-	 *
-	 * @param topic
-	 * @param message
-	 */
 	public void sendStringMessage(String topic, String message,
-	        @Nullable SuccessCallback<SendResult<String, byte[]>> successCallback,
-	        @Nullable FailureCallback failureCallback) {
+			@Nullable SuccessCallback<SendResult<String, byte[]>> successCallback,
+			@Nullable FailureCallback failureCallback) {
 		byte[] msgByte = message.getBytes();
 		sendByteMessage(topic, msgByte, successCallback, failureCallback);
 	}
 
-	/**
-	 * 发布消息
-	 *
-	 * @param topic
-	 * @param message
-	 */
 	public void sendByteMessage(String topic, byte[] message,
-	        @Nullable SuccessCallback<SendResult<String, byte[]>> successCallback,
-	        @Nullable FailureCallback failureCallback) {
+			@Nullable SuccessCallback<SendResult<String, byte[]>> successCallback,
+			@Nullable FailureCallback failureCallback) {
 		if (message == null || message.length == 0) {
 			log.warn("主题为 {} 的消息体为空，自动丢弃", topic);
 			return;

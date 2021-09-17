@@ -4,7 +4,7 @@ spring:
     name: ahead-doc
   profiles:
     #active: kafka,elastic,redis, dp
-    active: dp
+    active: logging, ds, dp,kafka,redis
 
 logging:
   config: classpath:logback-spring.xml
