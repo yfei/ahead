@@ -1,7 +1,6 @@
 package cn.dcube.ahead.soc.dp.context;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicLong;
 
 import javax.annotation.PostConstruct;
 
@@ -10,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
 import cn.dcube.ahead.commons.proto.transport.EventTransportEntity;
+import cn.dcube.ahead.kafka.config.KafkaTopicConfig;
 import cn.dcube.ahead.kafka.producer.KafkaProducer;
 import cn.dcube.ahead.redis.service.RedisService;
 import cn.dcube.ahead.soc.dp.config.DPConfig;
@@ -28,6 +28,9 @@ public class DPContext {
 
 	@Autowired
 	private DPConfig config;
+	
+	@Autowired
+	private KafkaTopicConfig kafkaTopicConfig;
 
 	@Autowired
 	private KafkaProducer producer;
@@ -91,4 +94,14 @@ public class DPContext {
 	public void setIdGenerator(IDGenerator idGenerator) {
 		this.idGenerator = idGenerator;
 	}
+
+	public KafkaTopicConfig getKafkaTopicConfig() {
+		return kafkaTopicConfig;
+	}
+
+	public void setKafkaTopicConfig(KafkaTopicConfig kafkaTopicConfig) {
+		this.kafkaTopicConfig = kafkaTopicConfig;
+	}
+
+	
 }

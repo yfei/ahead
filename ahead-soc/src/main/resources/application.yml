@@ -4,11 +4,12 @@ spring:
     name: ahead-doc
   profiles:
     #active: kafka,elastic,redis, dp
-    active: logging, ds, dp,kafka,redis
+    active: logging, ds, dp,dw,kafka,redis, elastic
 
 logging:
   config: classpath:logback-spring.xml
 
 soc:
-  redis-sync: # 是否对redis数据进行同步
-    enable: true
+  # 收到kafka消息后的处理线程数量。收到kafka消息后,接收线程会启动新线程处理数据，避免接收阻塞.
+  handle-threads: 4
+  handle-thread-name: soc-handle

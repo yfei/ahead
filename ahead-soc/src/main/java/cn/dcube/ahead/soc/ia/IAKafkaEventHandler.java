@@ -41,7 +41,7 @@ public class IAKafkaEventHandler implements IKafkaEventHandler {
 
 	@Override
 	public void handle(MessageType type, KafkaEvent event) {
-		EventTransportEntity transportEvent = ByteMessageParser.deserializer(event, type, EventTypeEnum.EVENT);
+		EventTransportEntity transportEvent = ByteMessageParser.deserializer(event, type, this.getEventType());
 		iaContext.handle(transportEvent);
 	}
 
@@ -49,11 +49,16 @@ public class IAKafkaEventHandler implements IKafkaEventHandler {
 	public List<KafkaTopic> getTopic() {
 		List<KafkaTopic> topics = new ArrayList<KafkaTopic>();
 		config.getConsumerTopics().forEach(topic -> {
-			if ("Event".equals(topic.getKey())) {
+			if (this.getEventType().equals(topic.getEventType())) {
 				topics.add(topic);
 			}
 		});
 		return topics;
+	}
+
+	@Override
+	public String getEventType() {
+		return EventTypeEnum.EVENT.getCode();
 	}
 
 }

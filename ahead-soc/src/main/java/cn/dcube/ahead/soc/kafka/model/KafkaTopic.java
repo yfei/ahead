@@ -8,10 +8,9 @@ public class KafkaTopic {
 
 	// 主题名称
 	private String topic;
-	// 主题数据类型
-	private MessageType type;
-	// 主题key
-	private String key;
-
 	
+	// 主题数据类型
+	private MessageType messageType;
+	// 主题key
+	private String EventType;
 }

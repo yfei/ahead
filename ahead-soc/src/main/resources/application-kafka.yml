@@ -22,7 +22,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
     listener:
-      type: SINGLE # 消费类型  BATCH 批量  SINGLE 单个
+      type: BATCH # 消费类型  BATCH 批量  SINGLE 单个
       # ackMode: 解释如下
       # BATCH:Commit whatever has already been processed before the next poll.
       # RECORD:Commit after each record is processed by the listener.
@@ -32,12 +32,12 @@ spring:
       # MANUAL:User takes responsibility for acks using an AcknowledgingMessageListener
       # MANUAL_IMMEDIATE:User takes responsibility for acks using an AcknowledgingMessageListener,The consumer immediately processes the commit.
       # ackMode如为MANUAL或者MANUAL_IMMEDIATE,则需要自己定制KafkaListener
-      ackMode: RECORD
+      ackMode: BATCH
       # ackTime: 5000 # ackMode为TIME或者COUNT_TIME时生效,ackTime
       # ackCount: 1 # ackMode为COUNT或者COUNT_TIME时生效,ackCount
       concurrency: 3     #设置消费的线程数
       poll-timeout: 1500   #如果消息队列中没有消息，等待timeout毫秒后，调用poll()方法。如果队列中有消息，立即消费消息，每次消费的消息的多少可以通过max.poll.records配置。
-    topics: # 主题
-      consumer: sdap-eventbase-collector
-      producer:
+    topics: # 主题配置
+      consumer-topics: sdap-eventbase-collector,sdap-eventbase-dp # 消费的主题
+      producer-topics: # 生产主题
         dp-event: sdap-eventbase-dp

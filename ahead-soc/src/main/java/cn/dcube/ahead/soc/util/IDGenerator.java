@@ -4,6 +4,11 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * ID生成器
+ * @author yangfei
+ *
+ */
 @Service
 public class IDGenerator {
 

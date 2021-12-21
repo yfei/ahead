@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 import cn.dcube.ahead.commons.log.enums.OperationType;
 
 /**
- * 自定义日志注解
- *
- * @author hejunjian
- * @date 2020/12/4 11:03
+ * 日志注解
+ * @date: 2021-12-21 9:56 <br>
+ * @author: yangfei <br>
+ * @version: 1.0
  */
 // 注解生命周期 程序运行时存在
 @Retention(RetentionPolicy.RUNTIME)
@@ -35,10 +35,6 @@ public @interface Log {
      */
     public OperationType operationType() default OperationType.OTHER;
     
-    
-    
-
-
     /**
      * 操作表名
      *

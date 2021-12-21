@@ -43,7 +43,7 @@ public class CommonModuleRefillHandler implements IRefillHandler {
 				// 处理数据
 				Map<String, Object> eventData = (Map<String, Object>) event.getEventData();
 
-				Map<String, String> fileds = module.getFields();
+				Map<String, String> fileds = module.getFieldMapping();
 				// 判断是否为null
 				boolean allNull = true;
 				for (Entry<String, String> filedEntry : fileds.entrySet()) {
@@ -53,17 +53,17 @@ public class CommonModuleRefillHandler implements IRefillHandler {
 				}
 				if (module.isFillIfNotNull() || !allNull) {
 					// 根据fields查询redis
-					String[] redisKeys = module.getRedisKey().split(DPConfig.KEY_FIELD_JOIN_SPLIT);
+					String[] redisKeys = module.getFieldKey().split(DPConfig.FIELD_JOIN_SPLIT);
 					String redisKeyValue = "";
 					for (String redisKey : redisKeys) {
-						redisKeyValue += eventData.get(redisKey) + module.getRedisKeyJoin();
+						redisKeyValue += eventData.get(redisKey) + module.getFieldKeyJoin();
 					}
 					if (!redisKeyValue.isEmpty()) {
 						redisKeyValue = redisKeyValue.substring(0,
-								redisKeyValue.length() - module.getRedisKeyJoin().length());
+								redisKeyValue.length() - module.getFieldKeyJoin().length());
 					}
 					String redisCache = redisService.getCacheMapValue(module.getRedisIndex(), redisKeyValue);
-					if (!redisCache.isEmpty()) {
+					if (redisCache != null && !redisCache.isEmpty()) {
 						JSONObject json = JSON.parseObject(redisCache);
 						for (Entry<String, String> propEntry : fileds.entrySet()) {
 							try {

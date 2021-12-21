@@ -3,8 +3,6 @@ package cn.dcube.ahead.soc.dp.config;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +11,7 @@ import cn.dcube.ahead.soc.kafka.model.KafkaTopic;
 import lombok.Data;
 
 /**
- * DP的配置
+ * DP配置
  * 
  * @author yangfei
  *
@@ -26,10 +24,12 @@ public class DPConfig {
 
 	public static String KEY_SPLIT = "_";
 
-	public static String KEY_FIELD_JOIN_SPLIT = "\\|";
-	
+	public static String FIELD_JOIN_SPLIT = "\\|";
+
+	// 节点id
 	private long id;
 
+	// 是否启用
 	private boolean enable;
 
 	// 消费主题
@@ -38,6 +38,7 @@ public class DPConfig {
 	// 回填线程数
 	private int refillThread;
 
+	// DP事件回填模块
 	private Map<String, DPEventModuleConfig> modules;
 
 }

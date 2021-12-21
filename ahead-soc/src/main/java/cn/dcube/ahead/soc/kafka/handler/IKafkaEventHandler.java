@@ -16,7 +16,7 @@ public interface IKafkaEventHandler {
 	/**
 	 * 数据处理
 	 */
-	public void handle(MessageType type,KafkaEvent event);
+	public void handle(MessageType messageType,KafkaEvent event);
 
 	/**
 	 * 同步的数据类型
@@ -24,5 +24,11 @@ public interface IKafkaEventHandler {
 	 * @return
 	 */
 	public List<KafkaTopic> getTopic();
+	
+	/**
+	 * 事件的业务类型
+	 * @return
+	 */
+	public String getEventType();
 
 }

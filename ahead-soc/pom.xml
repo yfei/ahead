@@ -72,4 +72,118 @@
 			<version>6.0.0</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source> <!-- 源代码使用的开发版本 -->
+					<target>1.8</target> <!-- 需要生成的目标class文件的编译版本 -->
+					<encoding>UTF-8</encoding>
+					<compilerVersion>1.8</compilerVersion>
+					<verbose>true</verbose>
+				</configuration>
+			</plugin>
+
+			<!--打包时将依赖包打包到lib下 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>assembly/lib</outputDirectory>
+							<excludeTransitive>false</excludeTransitive>
+							<stripVersion>false</stripVersion>
+							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<includes>
+						<!--注意从编译结果目录开始算目录结构 -->
+						<include>**/*.class</include>
+						<include>mapper/**/*.xml</include>
+						<include>i18n/*.*</include>
+						<include>META-INF</include>
+						<include>mybatis/*.xml</include>
+					</includes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+					<!-- 剔除spring-boot打包的org和BOOT-INF文件夹(用于子模块打包) -->
+					<skip>false</skip>
+					<!-- 指定该jar包启动时的主类[建议] -->
+					<mainClass>cn.dcube.ahead.soc.SOCApplicationMain</mainClass>
+					<layout>ZIP</layout>
+					<includes>
+						<!-- 排除第三方依赖jar(只保留本项目的jar) -->
+						<include>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${project.artifactId}</artifactId>
+						</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<!--主要使用的是maven提供的assembly插件完成 -->
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<!--具体的配置文件 -->
+							<descriptors>${project.basedir}/assembly/package.xml</descriptors>
+						</configuration>
+						<id>assembly</id>
+						<!--绑定到maven操作类型上 -->
+						<phase>package</phase>
+						<!--运行一次 -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<warName>${project.artifactId}</warName>
+				</configuration>
+			</plugin>
+		</plugins>
+		<finalName>${project.artifactId}</finalName>
+	</build>
 </project>

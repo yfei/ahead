@@ -1,7 +1,7 @@
 package cn.dcube.ahead.commons.log.enums;
 
 /**
- * 业务状态
+ * 操作返回状态 0 成功  1 失败
  * 
  * @author yangfei
  *

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import cn.dcube.ahead.kafka.event.KafkaEvent;
 import cn.dcube.ahead.kafka.listener.DefaultKafkaEventListener;
-import cn.dcube.ahead.soc.kafka.handler.KafkaEventHandlerContext;
+import cn.dcube.ahead.soc.kafka.KafkaEventHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -31,7 +31,7 @@ public class KafkaEventListener extends DefaultKafkaEventListener {
 	}
 
 	protected void statistics(KafkaEvent event) {
-		// TODO Auto-generated method stub
+		// TODO 对接收到的event进行统计
 		
 	}
 

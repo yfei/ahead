@@ -67,10 +67,10 @@
 	</dependencies>
 
 	<modules>
-		<!-- 工具模块 -->
+		<!-- 通讯模块 -->
+		<module>ahead-commons-transport</module>
+		<!-- 基础模块 -->
 		<module>ahead-commons-base</module>
-		<!-- 工具模块 -->
-		<module>ahead-commons-utils</module>
 		<!-- 核心模块 -->
 		<module>ahead-commons-core</module>
 		<!-- web模块 -->

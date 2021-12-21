@@ -9,6 +9,11 @@ import org.springframework.context.ApplicationListener;
 import cn.dcube.ahead.kafka.event.KafkaEvent;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * kafkaEvent的监听。
+ * @author yangfei
+ *
+ */
 @Slf4j
 public abstract class DefaultKafkaEventListener implements ApplicationListener<KafkaEvent> {
 

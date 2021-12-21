@@ -1,3 +1,15 @@
-#打印SQL日志־
+# Spring配置
+spring:
+  application:
+    name: ahead-doc
+  profiles:
+    #active: kafka,elastic,redis, dp
+    active: logging, ds, dp,dw,kafka,redis, elastic
+
 logging:
-  config: classpath:logback.xml
+  config: classpath:logback-spring.xml
+
+soc:
+  # 收到kafka消息后的处理线程数量。收到kafka消息后,接收线程会启动新线程处理数据，避免接收阻塞.
+  handle-threads: 4
+  handle-thread-name: soc-handle

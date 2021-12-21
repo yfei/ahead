@@ -3,6 +3,9 @@
 .project
 .classpath
 
+# idea settings
+*.iml
+
 # Compiled class file
 *.class
 target/

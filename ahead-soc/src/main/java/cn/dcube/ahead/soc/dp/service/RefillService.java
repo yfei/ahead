@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class RefillService {
 
 	private Map<String, IRefillHandler> handlerCategory = new HashMap<String, IRefillHandler>();
 
+	@Autowired
 	private List<IRefillHandler> handlers;
 
 	@PostConstruct

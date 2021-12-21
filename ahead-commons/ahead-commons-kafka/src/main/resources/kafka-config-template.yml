@@ -35,9 +35,6 @@ spring:
       concurrency: 3     #设置消费的线程数
       poll-timeout: 1500   #如果消息队列中没有消息，等待timeout毫秒后，调用poll()方法。如果队列中有消息，立即消费消息，每次消费的消息的多少可以通过max.poll.records配置。
     topics: # 主题
-      consumer: 
-        - { topic: 'test', type: 'String'}
-        - { topic: 'test', type: 'Protobuf'}
-        - { topic: 'test', type: 'Transport'}
-      producer:
-        
+      consumer-topics: sdap-eventbase-collector
+      producer-topics:
+        dp-event: sdap-eventbase-dp

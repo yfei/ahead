@@ -31,7 +31,7 @@ public class SingleKafkaListener {
 	private ApplicationEventPublisher eventPublisher;
 
 	@KafkaListener(id = "singleKafkaListener", autoStartup = "true", containerFactory = "kafkaListenerFactory", groupId = "${spring.kafka.consumer.group-id}", topics = {
-			"#{'${spring.kafka.topics.consumer}'.split(',')}" })
+			"#{'${spring.kafka.topics.consumer-topics}'.split(',')}" })
 	public void singleListener(ConsumerRecord<?, ?> record) {
 		try {
 			Optional<?> message = Optional.ofNullable(record.value());

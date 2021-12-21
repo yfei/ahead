@@ -10,39 +10,10 @@
 	<artifactId>ahead-commons-base</artifactId>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
-			<groupId>cn.dcube</groupId>
-			<artifactId>ahead-commons-utils</artifactId>
-			<version>${ahead.version}</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 		</dependency>
-		<!-- protobuf 依赖 -->
-		<dependency>
-			<groupId>com.google.protobuf</groupId>
-			<artifactId>protobuf-java</artifactId>
-			<version>3.13.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.protostuff</groupId>
-			<artifactId>protostuff-core</artifactId>
-			<version>1.7.2</version>
-		</dependency>
-		<dependency>
-			<groupId>io.protostuff</groupId>
-			<artifactId>protostuff-runtime</artifactId>
-			<version>1.7.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.googlecode.protobuf-java-format</groupId>
-			<artifactId>protobuf-java-format</artifactId>
-			<version>1.4</version>
-		</dependency>
-
-		<!-- spring core依赖 -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-		</dependency>
-
 	</dependencies>
 </project>

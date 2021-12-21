@@ -4,17 +4,17 @@ soc:
     id: 1
     refill-thread: 4 # 回填线程数量
     consumer-topics:
-      - topic: sdap-eventbase-collector
-        type: STRING_JSON
-        key: Event
+      - topic: sdap-eventbase-collector # 主题名称
+        message-type: JSON # 主题消息类型
+        event-ype: EVENT # 主题的事件类型
     modules: # 回填业务处理模块
       csf: # csf回填
         enable: false
         type: redis # 回填类型,目前仅支持redis
         redis-index: soc_csf # redis中的索引
-        redis-key: raw_id|sensor_model # 查询key,多个以|分隔
+        field-key: raw_id|sensor_model # 查询key,多个以|分隔
         fill-if-not-null: false # 如果没有值时,是否回填
-        fields:
+        field-mapping:
           a: b
       srcipv4_asset: # 源IP回填
         enable: true # 是否回填org
@@ -31,7 +31,7 @@ soc:
         type: redis # 回填类型,目前仅支持redis
         redis-index: soc_business # redis中的索引
         redis-key: int_srcipv4|srcport # 查询key,多个以|分隔
-        redis-key-join: ":" # redisKey值的拼接方式,默认为"_"
+        field-key-join: ":" # redisKey值的拼接方式,默认为"_"
         fill-if-not-null: true # 如果没有值时,是否回填
         fields: # 回填字段
           srcBusiName: systemName # key为eventbase中的字段名,value为redis中JSON格式的key
@@ -58,8 +58,8 @@ soc:
           srcBusiId: id
       GEO: # GEO 回填配置
          enable: true # 是否回填org
-         ipFields: 
+         ipFields: # ip字段
            src: int_srcipv4
            dst: int_dstipv4
-    monitor: # 状态监控
+    monitor: # 状态监控,暂未实现
       enable: false

@@ -35,25 +35,29 @@ public class ByteMessageParser {
 	/**
 	 * byte数组反序列化为EventTransportEntity
 	 * 
-	 * @param type
+	 * @param messageType
 	 * @param record
 	 * @return
 	 */
-	public static EventTransportEntity deserializer(KafkaEvent record, MessageType type, EventTypeEnum eventType) {
+	public static EventTransportEntity deserializer(KafkaEvent record, MessageType messageType, String eventType) {
 		EventTransportEntity eventTransportEntity = null;
-		if (type.compareTo(MessageType.TRANSPORT) == 0) {
+		if (messageType.compareTo(MessageType.TRANSPORT) == 0) { // transport
 			try {
 				eventTransportEntity = ProtoBufUtils.deserializer(ZipUtils.unGZip((byte[]) record.getValue()),
 						EventTransportEntity.class);
 			} catch (Exception e) {
 				log.error("kafka消息反序列化异常 topicName={},key={}", record.getTopic(), record.getKey());
 			}
-		} else if (type.compareTo(MessageType.PROTOBUF) == 0) {
+		} else if (messageType.compareTo(MessageType.PROTOBUF) == 0) { // protobuf
 			eventTransportEntity = new EventTransportEntity(StringUtils.getUUID(), record.getTopic(), eventType);
-			Map<String, Object> objectMap = compatibleProcessingDeserializer(record.getTopic(),
-					(byte[]) record.getValue());
-			eventTransportEntity.setEventData(objectMap);
-		} else if (type.compareTo(MessageType.STRING_JSON) == 0) {
+			if (EventTypeEnum.EVENT.getCode().equals(eventType)) {
+				Map<String, Object> objectMap = compatibleProcessingDeserializer(record.getTopic(),
+						(byte[]) record.getValue());
+				eventTransportEntity.setEventData(objectMap);
+			} else {
+				log.warn("不支持的Protobuf事件类型{}!", eventType);
+			}
+		} else if (messageType.compareTo(MessageType.JSON) == 0) { // json
 			eventTransportEntity = new EventTransportEntity(StringUtils.getUUID(), record.getTopic(), eventType);
 			try {
 				Map<String, Object> objectMap = JSON.parseObject(new String((byte[]) record.getValue(), "UTF-8"));
@@ -61,7 +65,7 @@ public class ByteMessageParser {
 			} catch (UnsupportedEncodingException e) {
 				log.error("kafka消息反序列化异常 topicName={},key={}", record.getTopic(), record.getKey());
 			}
-		} else if (type.compareTo(MessageType.STRING) == 0) {
+		} else if (messageType.compareTo(MessageType.STRING) == 0) { // 字符串
 			eventTransportEntity = new EventTransportEntity(StringUtils.getUUID(), record.getTopic(), eventType);
 			try {
 				eventTransportEntity.setEventData(new String((byte[]) record.getValue(), "UTF-8"));
@@ -122,33 +126,33 @@ public class ByteMessageParser {
 	 * 序列化消息
 	 * 
 	 * @param topic
-	 * @param type
+	 * @param messageType
 	 * @param message
 	 */
-	public static byte[] serializer(String topic, MessageType type, Object message) {
+	public static byte[] serializer(String topic, MessageType messageType, Object message) {
 		// 序列化成ProtoBuf数据结构
-		byte[] protobufData = null;
-		if (type.compareTo(MessageType.STRING) == 0 || type.compareTo(MessageType.STRING_JSON) == 0) {
+		byte[] messageData = null;
+		if (messageType.compareTo(MessageType.STRING) == 0 || messageType.compareTo(MessageType.JSON) == 0) {
 			if (message instanceof String) {
-				protobufData = ((String) message).getBytes();
+				messageData = ((String) message).getBytes();
 			}
 		} else {
-			if (message instanceof EventTransportEntity) {
-				if (type.compareTo(MessageType.TRANSPORT) == 0) {
-					protobufData = ZipUtils.gZip(ProtoBufUtils.serializer(message));
-				} else if (type.compareTo(MessageType.PROTOBUF) == 0) {
-					protobufData = compatibleProcessingSerializer(topic,
+			if (message instanceof EventTransportEntity) { // 如果是transport
+				if (messageType.compareTo(MessageType.TRANSPORT) == 0) {
+					messageData = ZipUtils.gZip(ProtoBufUtils.serializer(message));
+				} else if (messageType.compareTo(MessageType.PROTOBUF) == 0) { // 如果发送protobuf
+					messageData = compatibleProcessingSerializer(topic,
 							((EventTransportEntity) message).getEventData());
 				}
 			} else {
 				log.warn("主题 {} 为无效主题，自动丢弃", topic);
 			}
 		}
-		if (protobufData == null || protobufData.length == 0) {
+		if (messageData == null || messageData.length == 0) {
 			log.warn("主题为 {} 的消息体为空，自动丢弃", topic);
 		}
 
-		return protobufData;
+		return messageData;
 	}
 
 	/**

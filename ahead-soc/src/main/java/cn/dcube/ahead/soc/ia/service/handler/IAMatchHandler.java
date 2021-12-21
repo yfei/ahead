@@ -54,7 +54,7 @@ public class IAMatchHandler implements IMatchHandler {
 				}
 				if (module.isFillIfNotNull() || !allNull) {
 					// 根据fields查询redis
-					String[] redisKeys = module.getRedisKey().split(DPConfig.KEY_FIELD_JOIN_SPLIT);
+					String[] redisKeys = module.getRedisKey().split(DPConfig.FIELD_JOIN_SPLIT);
 					String redisKeyValue = "";
 					for (String redisKey : redisKeys) {
 						redisKeyValue += eventData.get(redisKey) + module.getRedisKeyJoin();

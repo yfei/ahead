@@ -64,7 +64,7 @@ public class GeoRefillHandler implements IRefillHandler {
 								String domainId = domainSets.iterator().next();
 								if (!domainId.isEmpty()) {
 									String domainInfo = redisService.getCacheMapValue("domain_info", domainId);
-									if (!domainInfo.isEmpty()) {
+									if (domainInfo != null && !domainInfo.isEmpty()) {
 										JSONObject json = JSON.parseObject(domainInfo);
 										eventData.put(prexif + "DomainId", domainId); // 网域id
 										eventData.put(prexif + "DomainType", json.get("ipType")); // 网域类型

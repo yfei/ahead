@@ -32,7 +32,7 @@ public class BatchKafkaListener {
 	private ApplicationEventPublisher eventPublisher;
 
 	@KafkaListener(id = "batchKafkaListener", autoStartup = "true", containerFactory = "kafkaListenerFactory", groupId = "${spring.kafka.consumer.group-id}", topics = {
-			"#{'${spring.kafka.topics.consumer}'.split(',')}" })
+			"#{'${spring.kafka.topics.consumer-topics}'.split(',')}" })
 	public void batchListener(List<ConsumerRecord<?, ?>> records) {
 		for (ConsumerRecord<?, ?> record : records) {
 			try {
