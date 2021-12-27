@@ -11,7 +11,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<spring-boot.version>2.3.5.RELEASE</spring-boot.version>
+		<spring-boot.version>2.6.2</spring-boot.version>
 		<nacos.version>0.6.0</nacos.version>
 	</properties>
 
@@ -30,6 +30,12 @@
 				<groupId>com.alibaba</groupId>
 				<artifactId>fastjson</artifactId>
 				<version>1.2.74</version>
+			</dependency>
+
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>2.9</version>
 			</dependency>
 
 			<!-- nacos 注册中心依赖 -->
@@ -67,10 +73,10 @@
 	</dependencies>
 
 	<modules>
-		<!-- 通讯模块 -->
-		<module>ahead-commons-transport</module>
 		<!-- 基础模块 -->
 		<module>ahead-commons-base</module>
+		<!-- 通讯模块 -->
+		<module>ahead-commons-transport</module>
 		<!-- 核心模块 -->
 		<module>ahead-commons-core</module>
 		<!-- web模块 -->

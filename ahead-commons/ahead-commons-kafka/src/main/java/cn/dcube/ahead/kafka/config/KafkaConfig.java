@@ -21,6 +21,8 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ContainerProperties;
 
+import javax.annotation.Resource;
+
 /**
  * Kafka配置项
  * 
@@ -34,10 +36,10 @@ import org.springframework.kafka.listener.ContainerProperties;
 @ConditionalOnProperty(prefix = "spring.kafka", name = { "bootstrap-servers" })
 public class KafkaConfig {
 
-	@Autowired
+	@Resource
 	private KafkaProperties kafkaProperties;
 
-	@Autowired
+	@Resource
 	private KafkaListenerEndpointRegistry registry;
 
 	public boolean isBatchListener() {

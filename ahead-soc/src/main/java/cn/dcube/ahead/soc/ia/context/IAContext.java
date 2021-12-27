@@ -14,7 +14,7 @@ import cn.dcube.ahead.redis.service.RedisService;
 import cn.dcube.ahead.soc.ia.config.IAConfig;
 import cn.dcube.ahead.soc.ia.service.MatchService;
 import cn.dcube.ahead.soc.ia.task.MatchTask;
-import cn.dcube.ahead.utils.thread.ThreadPoolUtil;
+import cn.dcube.ahead.base.thread.ThreadPoolUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

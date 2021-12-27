@@ -16,7 +16,7 @@ import cn.dcube.ahead.commons.proto.transport.EventTransportEntity.MessageType;
 import cn.dcube.ahead.commons.proto.util.ProtoBufUtils;
 import cn.dcube.ahead.kafka.coder.ByteMessageParser;
 import cn.dcube.ahead.kafka.config.KafkaConfig;
-import cn.dcube.ahead.utils.util.ZipUtils;
+import cn.dcube.ahead.base.util.ZipUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**

@@ -1,0 +1,8 @@
+soc:
+  dw: # 充当DW角色时的配置
+    enable: true # 是否充当DW角色
+    id: 1
+    consumer-topics:
+      - topic: sdap-eventbase-dp
+        type: TRANSPORT
+        key: EVENT

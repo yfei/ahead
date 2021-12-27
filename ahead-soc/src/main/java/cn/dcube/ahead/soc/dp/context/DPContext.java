@@ -16,7 +16,7 @@ import cn.dcube.ahead.soc.dp.config.DPConfig;
 import cn.dcube.ahead.soc.dp.service.RefillService;
 import cn.dcube.ahead.soc.dp.task.RefillTask;
 import cn.dcube.ahead.soc.util.IDGenerator;
-import cn.dcube.ahead.utils.thread.ThreadPoolUtil;
+import cn.dcube.ahead.base.thread.ThreadPoolUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

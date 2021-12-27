@@ -19,8 +19,8 @@ import cn.dcube.ahead.commons.proto.transport.EventTransportEntity.MessageType;
 import cn.dcube.ahead.commons.proto.transport.EventTypeEnum;
 import cn.dcube.ahead.commons.proto.util.ProtoBufUtils;
 import cn.dcube.ahead.kafka.event.KafkaEvent;
-import cn.dcube.ahead.utils.util.StringUtils;
-import cn.dcube.ahead.utils.util.ZipUtils;
+import cn.dcube.ahead.base.util.StringUtils;
+import cn.dcube.ahead.base.util.ZipUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**

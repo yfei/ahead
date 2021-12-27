@@ -10,12 +10,6 @@
 	<artifactId>ahead-commons-core</artifactId>
 	
 	<dependencies>
-		<!-- data jdbc -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jdbc</artifactId>
-		</dependency>
-
 		<!-- data jpa -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
