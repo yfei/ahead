@@ -10,8 +10,7 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication(scanBasePackages = {"cn.dcube.ahead"})
 @MapperScan(basePackages = {"cn.dcube"})
-@Import({DynamicDataSourceRegister.class})
-@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true) 
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class ApplicationMain{
 	
 	public static void main(String[] args) {

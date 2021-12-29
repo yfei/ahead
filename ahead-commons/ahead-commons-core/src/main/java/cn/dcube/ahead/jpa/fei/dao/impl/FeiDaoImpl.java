@@ -191,13 +191,20 @@ public class FeiDaoImpl implements IFeiDao {
 		// set alias
 		if (filter != null) {
 			filter.setTableAlias(QueryCondition.DEFAULT_ALIAS);
-			jpql.append(" and ").append(filter.getString());
+			// 20211229 解决hibernate新版本不支持?替换符的方式。use JPA-style ordinal parameters (e.g., `?1`) instead
+			String filterString = filter.getString();
+			filterString = filterString.replace("?","#");
+			int index = 1;
+			while(filterString.indexOf("#")>-1) {
+				filterString = filterString.replaceFirst("#","?" + index);
+				index++;
+			}
+			jpql.append(" and ").append(filterString);
 		}
 		if (sort != null) {
 			sort.setAlias(QueryCondition.DEFAULT_ALIAS);
 			jpql.append(" order by ").append(sort.getString());
 		}
-
 		Query query = entityManager.createQuery(jpql.toString());
 
 		if (pagination != null) {
@@ -223,8 +230,6 @@ public class FeiDaoImpl implements IFeiDao {
 	 *            the filter
 	 * @param sort
 	 *            the sort
-	 * @param pagination
-	 *            the pagination
 	 * @return the Query object
 	 */
 	private <T extends IEntity> Query generateCountQuery(Class<T> clazz, IFilter filter, ISort sort) {
@@ -234,7 +239,15 @@ public class FeiDaoImpl implements IFeiDao {
 		// set alias
 		if (filter != null) {
 			filter.setTableAlias(QueryCondition.DEFAULT_ALIAS);
-			jpql.append(" and ").append(filter.getString());
+			// 20211229 解决hibernate新版本不支持?替换符的方式。use JPA-style ordinal parameters (e.g., `?1`) instead
+			String filterString = filter.getString();
+			filterString = filterString.replace("?","#");
+			int index = 1;
+			while(filterString.indexOf("#")>-1) {
+				filterString = filterString.replaceFirst("#","?" + index);
+				index++;
+			}
+			jpql.append(" and ").append(filterString);
 		}
 		if (sort != null) {
 			sort.setAlias(QueryCondition.DEFAULT_ALIAS);
@@ -341,4 +354,14 @@ public class FeiDaoImpl implements IFeiDao {
 		
 	}
 
+	public static void main(String[] args) {
+		String s = "dfa=? and sdf=?";
+		s = s.replace("?","#");
+		int index = 1;
+		while(s.indexOf("#")>-1) {
+			s = s.replaceFirst("#","?" + index);
+			index++;
+		}
+		System.out.println(s);
+	}
 }

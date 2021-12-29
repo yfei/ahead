@@ -4,6 +4,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import cn.dcube.ahead.jpa.fei.query.filter.IFilter;
+import cn.dcube.ahead.jpa.fei.query.filter.impl.SimpleFilter;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import cn.dcube.ahead.module.curd.entity.UserEntity2;
 import cn.dcube.ahead.module.curd.mapper.UserMapper;
 import cn.dcube.ahead.module.curd.repository.UserRepository;
 import cn.dcube.ahead.jpa.fei.service.IFeiService;
+
+import java.util.List;
 
 @Service
 @Primary
@@ -30,8 +34,8 @@ public class CurdService implements ICurdService{
 
 	@PostConstruct
 	public void init(){
-		((CurdService)SpringContext.getBean(CurdService.class)).test1();
-		((CurdService)SpringContext.getBean(CurdService.class)).test2();
+		IFilter filter = new SimpleFilter("name", "SPRING-DATA-JDBC").appendAnd(new SimpleFilter("age",30));
+		List<UserEntity2> users = service.get(UserEntity2.class,filter);
 	}
 
 	@Transactional
