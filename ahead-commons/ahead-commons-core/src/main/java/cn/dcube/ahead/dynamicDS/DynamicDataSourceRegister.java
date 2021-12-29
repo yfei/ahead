@@ -1,6 +1,9 @@
 package cn.dcube.ahead.dynamicDS;
 
+import cn.dcube.ahead.base.crypto.AESUtil;
 import cn.dcube.ahead.base.util.StringUtils;
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -8,10 +11,8 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
-import org.springframework.boot.context.properties.source.ConfigurationPropertyNameAliases;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
@@ -32,16 +33,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 
     // 如配置文件中未指定数据源类型，使用该默认值
     private static final Object DATASOURCE_TYPE_DEFAULT = "com.alibaba.druid.pool.DruidDataSource";
-    /**
-     * 数据源参数配置别名
-     */
-    private final static ConfigurationPropertyNameAliases aliases = new ConfigurationPropertyNameAliases();
 
-    static {
-        //由于部分数据源配置不同，所以在此处添加别名，避免切换数据源出现某些参数无法注入的情况
-        aliases.addAliases("url", "url");
-        aliases.addAliases("username", "username");
-    }
 
     /**
      * 参数绑定工具
@@ -60,20 +52,19 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 
     public DataSource buildDataSource(Map<String, Object> dsMap) {
         try {
-            Object type = dsMap.get("type");
-            if (type == null) {
-                // 默认DataSource
-                type = DATASOURCE_TYPE_DEFAULT;
-            }
-            Class<? extends DataSource> dataSourceType;
-            dataSourceType = (Class<? extends DataSource>) Class.forName((String) type);
             String driverClassName = dsMap.get("driverClassName").toString();
             String url = dsMap.get("url").toString();
             String username = dsMap.get("username").toString();
-            String password = dsMap.get("password").toString();
-            DataSourceBuilder factory = DataSourceBuilder.create().driverClassName(driverClassName).url(url)
-                    .username(username).password(password).type(dataSourceType);
-            return factory.build();
+            // 这里对密码加密
+            String password = AESUtil.decryptWithBase64(dsMap.get("password").toString(), AESUtil.SEED);
+            dsMap.put("password",password);
+            DruidDataSourceBuilder factory = DruidDataSourceBuilder.create();
+            DruidDataSource ds = factory.build(env, "spring.datasource.druid");
+            ds.setDriverClassName(driverClassName);
+            ds.setUrl(url);
+            ds.setUsername("root");
+            ds.setPassword("cecgw");
+            return ds;
         } catch (Throwable e) {
             log.error("buildDataSource failed!", e);
         }
@@ -128,7 +119,8 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
             }
             custom = buildDataSource(config);
             customDataSources.put(dsPrefix, custom);
-            dataBinder(custom, config);
+            Map druidProperties = (Map)config.get("druid");
+            dataBinder(custom, druidProperties);
             //如果 default标识为true,则将其设置为defaultDataSource
             if (null != config.get("default") && "true".equals(config.get("default").toString())) {
                 defaultDataSource = custom;
@@ -142,7 +134,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 
     private void dataBinder(DataSource dataSource, Map properties) {
         ConfigurationPropertySource source = new MapConfigurationPropertySource(properties);
-        Binder binderEx = new Binder(source.withAliases(aliases));
+        Binder binderEx = new Binder(source);
         //将参数绑定到对象
         binderEx.bind(ConfigurationPropertyName.EMPTY, Bindable.ofInstance(dataSource));
     }

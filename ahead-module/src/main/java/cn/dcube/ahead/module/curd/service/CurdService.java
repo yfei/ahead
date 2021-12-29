@@ -32,12 +32,6 @@ public class CurdService implements ICurdService{
 	@Resource
 	private UserMapper userMapper;
 
-	@PostConstruct
-	public void init(){
-		IFilter filter = new SimpleFilter("name", "SPRING-DATA-JDBC").appendAnd(new SimpleFilter("age",30));
-		List<UserEntity2> users = service.get(UserEntity2.class,filter);
-	}
-
 	@Transactional
 	@DynamicDS(name="master")
 	public void test1() {

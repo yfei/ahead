@@ -22,7 +22,7 @@ public class AESUtil {
 	/**
 	 * 加解密种子
 	 */
-	public static final String SEED = "Ahead@security";
+	public static final String SEED = "audit111";
 
 	/**
 	 * 指定加密算法
